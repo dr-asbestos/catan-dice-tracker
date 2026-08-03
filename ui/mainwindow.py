@@ -32,7 +32,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.tableDiceStats = QTableWidget(self.centralwidget)
         self.tableDiceStats.setObjectName(u"tableDiceStats")
-        self.tableDiceStats.setGeometry(QRect(130, 120, 191, 391))
+        self.tableDiceStats.setGeometry(QRect(130, 120, 207, 356))
         font = QFont()
         font.setPointSize(10)
         self.tableDiceStats.setFont(font)
