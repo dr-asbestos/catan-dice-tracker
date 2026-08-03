@@ -15,7 +15,7 @@ def main():
     cache.tracker = Tracker()
 
     app = QApplication(sys.argv)
-    window = GUIMain()
+    window = GUIMain(cache)
     window.show()
     sys.exit(app.exec())
     
