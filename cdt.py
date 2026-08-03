@@ -1,7 +1,28 @@
-from random import randint, choices
-from collections import Counter
-from pprint import pprint
+#from random import randint, choices
+#from collections import Counter
+#from pprint import pprint
 
+import sys
+from PySide6.QtWidgets import QApplication
+
+from ui.gui import GUIMain
+
+
+def main():
+    '''
+    Main entry point.
+    '''
+    app = QApplication(sys.argv)
+    window = GUIMain()
+    window.show()
+    sys.exit(app.exec())
+    
+
+if __name__ == '__main__':
+    main()
+
+
+'''
 # rolling paramenters
 nRolls = 360
 diceCombs = {2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:5, 9:4, 10:3, 11:2, 12:1}
@@ -22,3 +43,4 @@ pprint(luckDiffs)
 # pretty print
 formatted = {k:f'{v:+.2%}' for k,v in luckDiffs.items()}
 pprint(formatted)
+'''
