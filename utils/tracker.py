@@ -14,7 +14,7 @@ class Tracker:
         self.diceCombs = {2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:5, 9:4, 10:3, 11:2, 12:1}
         self.totalCombs = sum(self.diceCombs.values())
         self.rolls = []
-
+        self.sampleRolls = Counter()
         self.idealRolls = {}
         self.rollDiffs = {}
         self.luckDiffs = {}
@@ -24,9 +24,9 @@ class Tracker:
         '''
         todo write me
         '''
-        sampleRolls = Counter(self.rolls)
+        self.sampleRolls = Counter(self.rolls)
         self.idealRolls = {k:v/self.totalCombs*len(self.rolls) for k,v in self.diceCombs.items()}
-        self.rollDiffs = {k:sampleRolls.get(k, 0) - v for k,v in self.idealRolls.items()}
+        self.rollDiffs = {k:self.sampleRolls.get(k, 0) - v for k,v in self.idealRolls.items()}
         self.luckDiffs = {k:v/len(self.rolls) for k,v in self.rollDiffs.items()}
 
         #self.formatted = {k:f'{v:+.2%}' for k,v in self.luckDiffs.items()}
@@ -45,4 +45,4 @@ class Tracker:
         else:
             self.rolls.append(int(roll))
             self.calculate()
-    
+            
