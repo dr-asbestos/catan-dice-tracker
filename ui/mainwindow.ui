@@ -31,9 +31,14 @@
      <rect>
       <x>130</x>
       <y>120</y>
-      <width>291</width>
-      <height>371</height>
+      <width>191</width>
+      <height>391</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="frameShape">
      <enum>QFrame::Shape::Box</enum>
@@ -119,9 +124,14 @@ rolls:</string>
      <rect>
       <x>20</x>
       <y>140</y>
-      <width>91</width>
+      <width>51</width>
       <height>351</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
     <property name="frameShape">
      <enum>QFrame::Shape::Box</enum>
@@ -140,6 +150,9 @@ rolls:</string>
     </property>
     <property name="movement">
      <enum>QListView::Movement::Free</enum>
+    </property>
+    <property name="spacing">
+     <number>2</number>
     </property>
     <property name="supportedDragActions">
      <set>Qt::DropAction::IgnoreAction</set>
