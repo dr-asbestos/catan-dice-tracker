@@ -78,6 +78,7 @@ class GUIMain(QMainWindow):
         self.ui.lineNewRoll.clear()
         self.ui.listRolls.clear()
         self.ui.listRolls.addItems(str(r) for r in self.refTracker.rolls)
+        self.ui.listRolls.scrollToBottom()
         
         for i in range(11):
             self.ui.tableDiceStats.item(i, 1).setText(f'{self.refTracker.sampleRolls[i+2]}')
