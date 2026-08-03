@@ -1,4 +1,5 @@
-from PySide6.QtWidgets import QMainWindow, QHeaderView, QTableWidgetItem
+from PySide6.QtWidgets import (QMainWindow, QHeaderView, QTableWidgetItem, \
+                               QMessageBox)
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIntValidator
 
@@ -50,3 +51,16 @@ class GUIMain(QMainWindow):
         # =====================================================================
 
         self.ui.lineNewRoll.setValidator(QIntValidator(2, 12))
+
+
+    def closeEvent(self, event):
+        '''
+        Class method override. Promps the user before closing the application 
+        and all child windows.
+        '''
+        result = QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', 
+                                      QMessageBox.Yes, QMessageBox.Cancel)
+        if result == QMessageBox.Yes:
+            event.accept() 
+        else:
+            event.ignore()
