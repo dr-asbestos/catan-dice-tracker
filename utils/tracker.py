@@ -43,4 +43,14 @@ class Tracker:
         else:
             self.rolls.append(int(roll))
             self.calculate()
+
+    def deleteLastRoll(self):
+        '''
+        todo write me
+        '''
+        try:
+            self.rolls.pop()
+        except:
+            pass
+        self.calculate()
             
