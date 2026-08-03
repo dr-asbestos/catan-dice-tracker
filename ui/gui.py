@@ -28,8 +28,8 @@ class GUIMain(QMainWindow):
         self.tableDiceStatsHeader = {
             'Dice': 40,
             'Rolls': 40,
-            'Diffs': 50,
-            'Luck': 50
+            'Diffs': 60,
+            'Luck': 60
         }
         # column and row settings
         self.ui.tableDiceStats.setColumnCount(len(self.tableDiceStatsHeader))
@@ -39,12 +39,12 @@ class GUIMain(QMainWindow):
         for i, w in enumerate(self.tableDiceStatsHeader.values()):
             self.ui.tableDiceStats.setColumnWidth(i, w)
 
-        for i in range(12):
+        for i in range(11):
             self.ui.tableDiceStats.insertRow(i)
             for j in range(len(self.tableDiceStatsHeader)):
                 self.ui.tableDiceStats.setItem(i, j, QTableWidgetItem())
                 self.ui.tableDiceStats.item(i, j).setTextAlignment(Qt.AlignCenter)
-            self.ui.tableDiceStats.item(i, 0).setText(str(i+1))
+            self.ui.tableDiceStats.item(i, 0).setText(str(i+2))
 
         # =====================================================================
         # Events Stitching and Other Adjustments
@@ -53,6 +53,8 @@ class GUIMain(QMainWindow):
         self.ui.buttonNewRoll.clicked.connect(self.newRoll)
         self.ui.lineNewRoll.editingFinished.connect(self.newRoll)
         self.ui.lineNewRoll.setValidator(QIntValidator(2, 12))
+
+        self.updateFields()
 
 
     def closeEvent(self, event):
@@ -67,12 +69,27 @@ class GUIMain(QMainWindow):
         else:
             event.ignore()
 
-    
+
+    def updateFields(self):
+        '''
+        todo write me
+        '''
+        self.ui.lineNewRoll.clear()
+        self.ui.listRolls.clear()
+        self.ui.listRolls.addItems(str(r) for r in self.refTracker.rolls)
+        
+        for i in range(11):
+            self.ui.tableDiceStats.item(i, 1).setText(f'{self.refTracker.sampleRolls[i+2]}')
+            self.ui.tableDiceStats.item(i, 2).setText(f'{self.refTracker.rollDiffs[i+2]:+.2f}')
+            self.ui.tableDiceStats.item(i, 3).setText(f'{self.refTracker.luckDiffs[i+2]:+.2%}')
+
+
     def newRoll(self):
         '''
         todo write me
         '''
         self.refTracker.newRoll(self.ui.lineNewRoll.text())
-        self.ui.lineNewRoll.clear()
-        self.ui.listRolls.clear()
-        self.ui.listRolls.addItems(str(r) for r in self.refTracker.rolls)
+        self.updateFields()
+        
+
+        
