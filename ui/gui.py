@@ -50,6 +50,7 @@ class GUIMain(QMainWindow):
         # Events Stitching and Other Adjustments
         # =====================================================================
         
+        self.ui.buttonDeleteLastRoll.clicked.connect(self.deleteLastRoll)
         self.ui.buttonNewRoll.clicked.connect(self.newRoll)
         self.ui.lineNewRoll.editingFinished.connect(self.newRoll)
         self.ui.lineNewRoll.setValidator(QIntValidator(2, 12))
@@ -92,4 +93,9 @@ class GUIMain(QMainWindow):
         self.updateFields()
         
 
-        
+    def deleteLastRoll(self):
+        '''
+        todo write me
+        '''
+        self.refTracker.deleteLastRoll()
+        self.updateFields()
