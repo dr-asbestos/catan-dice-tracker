@@ -1,6 +1,7 @@
 from random import randint, choices
 from collections import Counter
-from pprint import pprint
+from sys import float_info
+epsilon = float_info.epsilon
 
 
 class Tracker:
@@ -18,7 +19,7 @@ class Tracker:
         self.idealRolls = {}
         self.rollDiffs = {}
         self.luckDiffs = {}
-        self.formatted = {}
+        self.calculate()
 
     def calculate(self):
         '''
@@ -27,10 +28,7 @@ class Tracker:
         self.sampleRolls = Counter(self.rolls)
         self.idealRolls = {k:v/self.totalCombs*len(self.rolls) for k,v in self.diceCombs.items()}
         self.rollDiffs = {k:self.sampleRolls.get(k, 0) - v for k,v in self.idealRolls.items()}
-        self.luckDiffs = {k:v/len(self.rolls) for k,v in self.rollDiffs.items()}
-
-        #self.formatted = {k:f'{v:+.2%}' for k,v in self.luckDiffs.items()}
-        #pprint(self.formatted)
+        self.luckDiffs = {k:v/(len(self.rolls)+epsilon) for k,v in self.rollDiffs.items()}
 
     
     def newRoll(self, roll):
