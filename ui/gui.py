@@ -50,6 +50,8 @@ class GUIMain(QMainWindow):
         # Events Stitching and Other Adjustments
         # =====================================================================
 
+        self.ui.buttonNewRoll.clicked.connect(self.newRoll)
+        self.ui.lineNewRoll.editingFinished.connect(self.newRoll)
         self.ui.lineNewRoll.setValidator(QIntValidator(2, 12))
 
 
@@ -64,3 +66,10 @@ class GUIMain(QMainWindow):
             event.accept() 
         else:
             event.ignore()
+
+    def newRoll(self):
+        '''
+        todo write me
+        '''
+        self.refTracker.newRoll(self.ui.lineNewRoll.text())
+        pass
