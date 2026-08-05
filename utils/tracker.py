@@ -14,6 +14,7 @@ class Tracker:
         self.diceCombs = {2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:5, 9:4, 10:3, 11:2, 12:1}
         self.totalCombs = sum(self.diceCombs.values())
         self.rolls = []
+        self.diceLocks = {x:{k:None for k in self.diceCombs.keys()} for x in (0,1,2,3)}
         self.calculate()
 
 
@@ -38,6 +39,7 @@ class Tracker:
         self.rolls.append(roll)
         self.calculate()
 
+
     def deleteLastRoll(self):
         '''
         todo write me
@@ -48,4 +50,13 @@ class Tracker:
             pass
         else:
             self.calculate()
+
             
+    def lockInDice(self, player, dice):
+        '''
+        todo write me
+        '''
+        print(f'locking in {dice} for P{player+1} before roll #{len(self.rolls)+1}')
+        self.diceLocks[player][dice] = len(self.rolls)
+
+    

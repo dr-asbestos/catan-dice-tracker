@@ -180,8 +180,9 @@ class GUIMain(QMainWindow):
         '''
         todo write me
         '''
-        print(f'{row=} {col=}')
         self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
         self.ui.tableDiceStats.item(row, col).setFlags(Qt.ItemIsEnabled)
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
+
+        self.refTracker.lockInDice(col//4-1, row+2)
         
