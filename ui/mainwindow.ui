@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>315</width>
+    <width>1209</width>
     <height>445</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>315</width>
+    <width>1315</width>
     <height>445</height>
    </size>
   </property>
@@ -29,9 +29,9 @@
    <widget class="QTableWidget" name="tableDiceStats">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>190</x>
       <y>80</y>
-      <width>207</width>
+      <width>1011</width>
       <height>356</height>
      </rect>
     </property>
@@ -68,7 +68,7 @@
      <bool>true</bool>
     </property>
     <property name="selectionMode">
-     <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+     <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
     </property>
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
@@ -76,6 +76,9 @@
     <property name="supportedDragActions">
      <set>Qt::DropAction::IgnoreAction</set>
     </property>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>10</number>
+    </attribute>
     <attribute name="verticalHeaderVisible">
      <bool>false</bool>
     </attribute>
@@ -83,7 +86,7 @@
    <widget class="QLabel" name="labelRollStatsStatic">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>190</x>
       <y>50</y>
       <width>146</width>
       <height>29</height>
@@ -104,7 +107,7 @@
      <rect>
       <x>10</x>
       <y>50</y>
-      <width>57</width>
+      <width>169</width>
       <height>29</height>
      </rect>
     </property>
@@ -115,46 +118,7 @@
      </font>
     </property>
     <property name="text">
-     <string notr="true">Rolls:</string>
-    </property>
-   </widget>
-   <widget class="QListWidget" name="listRolls">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>80</y>
-      <width>51</width>
-      <height>356</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Shape::Box</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="editTriggers">
-     <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
-    </property>
-    <property name="alternatingRowColors">
-     <bool>true</bool>
-    </property>
-    <property name="selectionMode">
-     <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
-    </property>
-    <property name="movement">
-     <enum>QListView::Movement::Free</enum>
-    </property>
-    <property name="spacing">
-     <number>2</number>
-    </property>
-    <property name="supportedDragActions">
-     <set>Qt::DropAction::IgnoreAction</set>
+     <string notr="true">Rolls and Yields:</string>
     </property>
    </widget>
    <widget class="QLabel" name="labelNewRollStatic">
@@ -229,6 +193,60 @@
     <property name="text">
      <string notr="true">Del last roll</string>
     </property>
+   </widget>
+   <widget class="QTableWidget" name="tableRolls">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>80</y>
+      <width>151</width>
+      <height>356</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::Box</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOn</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+    </property>
+    <property name="tabKeyNavigation">
+     <bool>false</bool>
+    </property>
+    <property name="showDropIndicator" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="dragDropOverwriteMode">
+     <bool>false</bool>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+    </property>
+    <property name="selectionBehavior">
+     <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+    </property>
+    <property name="supportedDragActions">
+     <set>Qt::DropAction::IgnoreAction</set>
+    </property>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>10</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
    </widget>
   </widget>
  </widget>

@@ -28,8 +28,24 @@ class GUIMain(QMainWindow):
         self.tableDiceStatsHeader = {
             'Dice': 40,
             'Rolls': 40,
-            'Diffs': 60,
-            'Luck': 60
+            'Diffs': 55,
+            'Luck': 60,
+            'P1': 22,
+            'P1 Yield': 60,
+            'P1 Diffs': 60,
+            'P1 Luck': 60,
+            'P2': 22,
+            'P2 Yield': 60,
+            'P2 Diffs': 60,
+            'P2 Luck': 60,
+            'P3': 22,
+            'P3 Yield': 60,
+            'P3 Diffs': 60,
+            'P3 Luck': 60,
+            'P4': 22,
+            'P4 Yield': 60,
+            'P4 Diffs': 60,
+            'P4 Luck': 60,
         }
         # column and row settings
         self.ui.tableDiceStats.setColumnCount(len(self.tableDiceStatsHeader))
@@ -45,11 +61,41 @@ class GUIMain(QMainWindow):
                 self.ui.tableDiceStats.setItem(i, j, QTableWidgetItem())
                 self.ui.tableDiceStats.item(i, j).setTextAlignment(Qt.AlignCenter)
             self.ui.tableDiceStats.item(i, 0).setText(str(i+2))
+            self.ui.tableDiceStats.item(i, 4).setCheckState(Qt.Unchecked)
+            self.ui.tableDiceStats.item(i, 8).setCheckState(Qt.Unchecked)
+            self.ui.tableDiceStats.item(i, 12).setCheckState(Qt.Unchecked)
+            self.ui.tableDiceStats.item(i, 16).setCheckState(Qt.Unchecked)
+            if i == 5: # for 7 roll
+                self.ui.tableDiceStats.item(i, 4).setFlags(Qt.ItemIsEnabled)
+                self.ui.tableDiceStats.item(i, 8).setFlags(Qt.ItemIsEnabled)
+                self.ui.tableDiceStats.item(i, 12).setFlags(Qt.ItemIsEnabled)
+                self.ui.tableDiceStats.item(i, 16).setFlags(Qt.ItemIsEnabled)
 
+        # =====================================================================
+        # Rolls table construction
+        # =====================================================================
+
+        self.tableRollsHeader = {
+            'Roll': 35,
+            'P1': 25,
+            'P2': 25,
+            'P3': 25,
+            'P4': 25
+        }
+        # column and row settings
+        self.ui.tableRolls.setColumnCount(len(self.tableRollsHeader))
+        self.ui.tableRolls.setHorizontalHeaderLabels(self.tableRollsHeader.keys())
+        self.ui.tableRolls.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+        self.ui.tableRolls.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+        for i, w in enumerate(self.tableRollsHeader.values()):
+            self.ui.tableRolls.setColumnWidth(i, w)
+
+        
         # =====================================================================
         # Events Stitching and Other Adjustments
         # =====================================================================
         
+        self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
         self.ui.buttonDeleteLastRoll.clicked.connect(self.deleteLastRoll)
         self.ui.buttonNewRoll.clicked.connect(self.newRoll)
         self.ui.lineNewRoll.editingFinished.connect(self.newRoll)
@@ -71,27 +117,52 @@ class GUIMain(QMainWindow):
             event.ignore()
 
 
-    def updateFields(self):
+    def updateFields(self, roll=None):
         '''
         todo write me
         '''
         self.ui.lineNewRoll.clear()
-        self.ui.listRolls.clear()
-        self.ui.listRolls.addItems(str(r) for r in self.refTracker.rolls)
-        self.ui.listRolls.scrollToBottom()
-        
+
+        self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
         for i in range(11):
             self.ui.tableDiceStats.item(i, 1).setText(f'{self.refTracker.sampleRolls[i+2]}')
             self.ui.tableDiceStats.item(i, 2).setText(f'{self.refTracker.rollDiffs[i+2]:+.2f}')
             self.ui.tableDiceStats.item(i, 3).setText(f'{self.refTracker.luckDiffs[i+2]:+.2%}')
+            self.ui.tableDiceStats.item(i, 5).setText(f'{self.refTracker.p1yield[i+2]}')
+        self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
+
+        if roll is not None:
+            i = self.ui.tableRolls.rowCount()
+            self.ui.tableRolls.insertRow(i)
+            for j in range(len(self.tableRollsHeader)):
+                self.ui.tableRolls.setItem(i, j, QTableWidgetItem())
+                self.ui.tableRolls.item(i, j).setTextAlignment(Qt.AlignCenter)
+            self.ui.tableRolls.item(i, 0).setText(str(roll[0]))
+            self.ui.tableRolls.item(i, 1).setText('\u2714' if roll[1][0] else '\u2717')
+            self.ui.tableRolls.item(i, 2).setText('\u2714' if roll[1][1] else '\u2717')
+            self.ui.tableRolls.item(i, 3).setText('\u2714' if roll[1][2] else '\u2717')
+            self.ui.tableRolls.item(i, 4).setText('\u2714' if roll[1][3] else '\u2717')
 
 
     def newRoll(self):
         '''
         todo write me
         '''
-        self.refTracker.newRoll(self.ui.lineNewRoll.text())
-        self.updateFields()
+        try:
+            dice = None
+            dice = int(self.ui.lineNewRoll.text())
+            if not (2 <= dice <= 12):
+                raise
+        except:
+            print(f'Invalid dice: {dice}')
+        else:
+            roll = (dice, 
+                    (self.ui.tableDiceStats.item(dice-2, 4).checkState() == Qt.Checked,
+                     self.ui.tableDiceStats.item(dice-2, 8).checkState() == Qt.Checked,
+                     self.ui.tableDiceStats.item(dice-2, 12).checkState() == Qt.Checked,
+                     self.ui.tableDiceStats.item(dice-2, 16).checkState() == Qt.Checked))
+            self.refTracker.newRoll(roll)
+            self.updateFields(roll)
         
 
     def deleteLastRoll(self):
@@ -99,4 +170,15 @@ class GUIMain(QMainWindow):
         todo write me
         '''
         self.refTracker.deleteLastRoll()
+        self.ui.tableRolls.removeRow(self.ui.tableRolls.rowCount()-1)
         self.updateFields()
+
+    def lockInDice(self, row, col):
+        '''
+        todo write me
+        '''
+        print(f'{row=} {col=}')
+        self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
+        self.ui.tableDiceStats.item(row, col).setFlags(Qt.ItemIsEnabled)
+        self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
+        

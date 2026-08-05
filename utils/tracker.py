@@ -25,24 +25,21 @@ class Tracker:
         '''
         todo write me
         '''
-        self.sampleRolls = Counter(self.rolls)
+        self.sampleRolls = Counter(r[0] for r in self.rolls)
         self.idealRolls = {k:v/self.totalCombs*len(self.rolls) for k,v in self.diceCombs.items()}
         self.rollDiffs = {k:self.sampleRolls.get(k, 0) - v for k,v in self.idealRolls.items()}
         self.luckDiffs = {k:v/(len(self.rolls)+epsilon) for k,v in self.rollDiffs.items()}
+
+        self.p1yield = {k:[roll[1][0] for roll in self.rolls if roll[0] == k].count(True) for k in self.diceCombs.keys()}
+        print(f'{self.p1yield=}')
 
     
     def newRoll(self, roll):
         '''
         todo write me
         '''
-        try:
-            if not (2 <= int(roll) <= 12):
-                raise
-        except:
-            print(f'Invalid dice: {roll}')
-        else:
-            self.rolls.append(int(roll))
-            self.calculate()
+        self.rolls.append(roll)
+        self.calculate()
 
     def deleteLastRoll(self):
         '''
