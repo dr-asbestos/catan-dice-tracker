@@ -199,7 +199,7 @@
      <rect>
       <x>10</x>
       <y>80</y>
-      <width>151</width>
+      <width>171</width>
       <height>356</height>
      </rect>
     </property>
@@ -245,7 +245,7 @@
      <number>10</number>
     </attribute>
     <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
+     <bool>true</bool>
     </attribute>
    </widget>
   </widget>

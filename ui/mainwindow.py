@@ -86,7 +86,7 @@ class Ui_MainWindow(object):
         self.buttonDeleteLastRoll.setText(u"Del last roll")
         self.tableRolls = QTableWidget(self.centralwidget)
         self.tableRolls.setObjectName(u"tableRolls")
-        self.tableRolls.setGeometry(QRect(10, 80, 151, 356))
+        self.tableRolls.setGeometry(QRect(10, 80, 171, 356))
         self.tableRolls.setFont(font)
         self.tableRolls.setFrameShape(QFrame.Shape.Box)
         self.tableRolls.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
@@ -100,7 +100,7 @@ class Ui_MainWindow(object):
         self.tableRolls.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.tableRolls.setSupportedDragActions(Qt.DropAction.IgnoreAction)
         self.tableRolls.horizontalHeader().setMinimumSectionSize(10)
-        self.tableRolls.verticalHeader().setVisible(False)
+        self.tableRolls.verticalHeader().setVisible(True)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
