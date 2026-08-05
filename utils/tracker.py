@@ -1,4 +1,3 @@
-from random import randint, choices
 from collections import Counter
 from sys import float_info
 epsilon = float_info.epsilon
@@ -15,11 +14,8 @@ class Tracker:
         self.diceCombs = {2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:5, 9:4, 10:3, 11:2, 12:1}
         self.totalCombs = sum(self.diceCombs.values())
         self.rolls = []
-        self.sampleRolls = Counter()
-        self.idealRolls = {}
-        self.rollDiffs = {}
-        self.luckDiffs = {}
         self.calculate()
+
 
     def calculate(self):
         '''
@@ -30,8 +26,9 @@ class Tracker:
         self.rollDiffs = {k:self.sampleRolls.get(k, 0) - v for k,v in self.idealRolls.items()}
         self.luckDiffs = {k:v/(len(self.rolls)+epsilon) for k,v in self.rollDiffs.items()}
 
-        self.p1yield = {k:[roll[1][0] for roll in self.rolls if roll[0] == k].count(True) for k in self.diceCombs.keys()}
-        print(f'{self.p1yield=}')
+        self.playerYields = {x:{k:[roll[1][x] for roll in self.rolls if roll[0] == k].count(True) for k in self.diceCombs.keys()} for x in (0,1,2,3)}
+
+        #print(f'{self.playerYields=}')
 
     
     def newRoll(self, roll):
@@ -49,5 +46,6 @@ class Tracker:
             self.rolls.pop()
         except:
             pass
-        self.calculate()
+        else:
+            self.calculate()
             
