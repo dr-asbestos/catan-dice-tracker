@@ -1,7 +1,7 @@
 # Settlers of Catan Dice Tracker
 Have you eved wondered just how much you are getting screwed over by the dice in your Catan games? Well, wonder no longer! Because now you can use this handy tool (_which I smashed out in a couple of hours in a state of exasperated catharsis_) to find out! It's janky and hastly made and looks terrible and uses questionable maths and was probably a waste of time, but hey!,... ummm... I'm not sure what's the silver lining here. 
 
-!(/assets/example.png)
+![screenshot](/assets/example.png)
 
 ## Quick guide
 1. Run `cdt.py`.
