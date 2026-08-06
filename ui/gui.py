@@ -138,6 +138,7 @@ class GUIMain(QMainWindow):
                 self.ui.tableDiceStats.item(i, 4*p+7).setText(f'{self.refTracker.playerYieldLuck[p][i+2]:+.2%}')
                 self.ui.tableDiceStats.item(i, 4*p+7).setBackground(self.interpolateColour(self.refTracker.playerYieldLuck[p][i+2], -.1, .1))
 
+        self.ui.tableDiceStats.clearSelection()
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
         if roll is not None:
@@ -159,8 +160,8 @@ class GUIMain(QMainWindow):
         todo write me
         '''
         ratio = max(0.0, min(1.0, (val - minLim) / (maxLim - minLim)))
-        colourMin = QColor('lightcoral')
-        colourMax = QColor('lightgreen')
+        colourMin = QColor(255,120,120) #lightcoral, tomato
+        colourMax = QColor(120,255,120) #lightgreen, limegreen
 
         return QColor(int(colourMin.red() + ratio * (colourMax.red() - colourMin.red())), \
                       int(colourMin.green() + ratio * (colourMax.green() - colourMin.green())), \
@@ -202,7 +203,8 @@ class GUIMain(QMainWindow):
         '''
         self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
         self.ui.tableDiceStats.item(row, col).setFlags(Qt.ItemIsEnabled)
-        self.ui.tableDiceStats.item(row, col).setBackground(QColor('lightblue'))
+        self.ui.tableDiceStats.item(row, col).setBackground(QColor('orchid'))
+        self.ui.tableDiceStats.item(row, col+1).setBackground(QColor('orchid'))
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
         self.refTracker.lockInDice(col//4-1, row+2)
