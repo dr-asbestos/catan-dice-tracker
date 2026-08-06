@@ -133,7 +133,7 @@ class GUIMain(QMainWindow):
                 self.ui.tableDiceStats.item(i, 4*p+5).setText(f'{self.refTracker.playerYields[p][i+2]}')
                 self.ui.tableDiceStats.item(i, 4*p+6).setText(f'{self.refTracker.playerYieldDiffs[p][i+2]:+.2f}')
                 self.ui.tableDiceStats.item(i, 4*p+7).setText(f'{self.refTracker.playerYieldLuck[p][i+2]:+.2%}')
-                
+
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
         if roll is not None:
@@ -142,11 +142,10 @@ class GUIMain(QMainWindow):
             for j in range(len(self.tableRollsHeader)):
                 self.ui.tableRolls.setItem(i, j, QTableWidgetItem())
                 self.ui.tableRolls.item(i, j).setTextAlignment(Qt.AlignCenter)
-            self.ui.tableRolls.item(i, 0).setText(str(roll[0]))
-            self.ui.tableRolls.item(i, 1).setText('\u2714' if roll[1][0] else '\u2717')
-            self.ui.tableRolls.item(i, 2).setText('\u2714' if roll[1][1] else '\u2717')
-            self.ui.tableRolls.item(i, 3).setText('\u2714' if roll[1][2] else '\u2717')
-            self.ui.tableRolls.item(i, 4).setText('\u2714' if roll[1][3] else '\u2717')
+                if j == 0:
+                    self.ui.tableRolls.item(i, j).setText(str(roll[0]))
+                else:
+                    self.ui.tableRolls.item(i, j).setText('\u2714' if roll[1][j-1] else '\u2717')
 
 
     def newRoll(self):
