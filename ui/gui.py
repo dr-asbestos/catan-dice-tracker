@@ -159,14 +159,14 @@ class GUIMain(QMainWindow):
             self.ui.tableDiceStats.item(i, 2).setText(f'{self.refTracker.rollDiffs[i+2]:+.2f}')
             self.ui.tableDiceStats.item(i, 2).setBackground(self.interpolateColour(self.refTracker.rollDiffs[i+2], -2, 2))
             self.ui.tableDiceStats.item(i, 3).setText(f'{self.refTracker.luckDiffs[i+2]:+.2%}')
-            self.ui.tableDiceStats.item(i, 3).setBackground(self.interpolateColour(self.refTracker.luckDiffs[i+2], -.1, .1))
+            self.ui.tableDiceStats.item(i, 3).setBackground(self.interpolateColour(self.refTracker.luckDiffs[i+2], -.3, .3))
 
             for p in (0,1,2,3):
                 self.ui.tableDiceStats.item(i, 4*p+5).setText(f'{self.refTracker.playerYields[p][i+2]}')
                 self.ui.tableDiceStats.item(i, 4*p+6).setText(f'{self.refTracker.playerYieldDiffs[p][i+2]:+.2f}')
                 self.ui.tableDiceStats.item(i, 4*p+6).setBackground(self.interpolateColour(self.refTracker.playerYieldDiffs[p][i+2], -2, 2))
                 self.ui.tableDiceStats.item(i, 4*p+7).setText(f'{self.refTracker.playerYieldLuck[p][i+2]:+.2%}')
-                self.ui.tableDiceStats.item(i, 4*p+7).setBackground(self.interpolateColour(self.refTracker.playerYieldLuck[p][i+2], -.2, .2))
+                self.ui.tableDiceStats.item(i, 4*p+7).setBackground(self.interpolateColour(self.refTracker.playerYieldLuck[p][i+2], -.3, .3))
 
         self.ui.tableDiceStats.clearSelection()
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
@@ -179,7 +179,7 @@ class GUIMain(QMainWindow):
             self.ui.tableTotalStats.item(1, p).setBackground(self.interpolateColour(tempDiffs, -2, 2))
             tempLuck = sum(self.refTracker.playerYieldLuck[p].values())
             self.ui.tableTotalStats.item(2, p).setText(f'{tempLuck:+.2%}')
-            self.ui.tableTotalStats.item(2, p).setBackground(self.interpolateColour(tempLuck, -.2, .2))
+            self.ui.tableTotalStats.item(2, p).setBackground(self.interpolateColour(tempLuck, -.3, .3))
 
         # populating and colouring roll+yield history table
         if roll is not None:
