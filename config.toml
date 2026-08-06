@@ -1,0 +1,7 @@
+# [red, green, blue]
+[Colours]
+yieldYes    = [144, 238, 144]
+yieldNo     = [240, 128, 128]
+rangeMin    = [255, 120, 120]
+rangeMax    = [120, 255, 120]
+settlement  = [214, 112, 214]
