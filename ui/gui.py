@@ -127,18 +127,23 @@ class GUIMain(QMainWindow):
         for i in range(11):
             self.ui.tableDiceStats.item(i, 1).setText(f'{self.refTracker.sampleRolls[i+2]}')
             self.ui.tableDiceStats.item(i, 2).setText(f'{self.refTracker.rollDiffs[i+2]:+.2f}')
+            self.ui.tableDiceStats.item(i, 2).setBackground(self.interpolateColour(self.refTracker.rollDiffs[i+2], -2, 2))
             self.ui.tableDiceStats.item(i, 3).setText(f'{self.refTracker.luckDiffs[i+2]:+.2%}')
+            self.ui.tableDiceStats.item(i, 3).setBackground(self.interpolateColour(self.refTracker.luckDiffs[i+2], -.1, .1))
 
             for p in (0,1,2,3):
                 self.ui.tableDiceStats.item(i, 4*p+5).setText(f'{self.refTracker.playerYields[p][i+2]}')
                 self.ui.tableDiceStats.item(i, 4*p+6).setText(f'{self.refTracker.playerYieldDiffs[p][i+2]:+.2f}')
+                self.ui.tableDiceStats.item(i, 4*p+6).setBackground(self.interpolateColour(self.refTracker.playerYieldDiffs[p][i+2], -2, 2))
                 self.ui.tableDiceStats.item(i, 4*p+7).setText(f'{self.refTracker.playerYieldLuck[p][i+2]:+.2%}')
+                self.ui.tableDiceStats.item(i, 4*p+7).setBackground(self.interpolateColour(self.refTracker.playerYieldLuck[p][i+2], -.1, .1))
 
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
         if roll is not None:
             i = self.ui.tableRolls.rowCount()
             self.ui.tableRolls.insertRow(i)
+            self.ui.tableRolls.scrollToBottom()
             for j in range(len(self.tableRollsHeader)):
                 self.ui.tableRolls.setItem(i, j, QTableWidgetItem())
                 self.ui.tableRolls.item(i, j).setTextAlignment(Qt.AlignCenter)
@@ -147,6 +152,19 @@ class GUIMain(QMainWindow):
                 else:
                     self.ui.tableRolls.item(i, j).setText('\u2714' if roll[1][j-1] else '\u2717')
                     self.ui.tableRolls.item(i, j).setBackground(QColor('lightgreen') if roll[1][j-1] else QColor('lightcoral'))
+
+
+    def interpolateColour(self, val, minLim, maxLim):
+        '''
+        todo write me
+        '''
+        ratio = max(0.0, min(1.0, (val - minLim) / (maxLim - minLim)))
+        colourMin = QColor('lightcoral')
+        colourMax = QColor('lightgreen')
+
+        return QColor(int(colourMin.red() + ratio * (colourMax.red() - colourMin.red())), \
+                      int(colourMin.green() + ratio * (colourMax.green() - colourMin.green())), \
+                      int(colourMin.blue() + ratio * (colourMax.blue() - colourMin.blue())))
 
 
     def newRoll(self):
@@ -184,6 +202,7 @@ class GUIMain(QMainWindow):
         '''
         self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
         self.ui.tableDiceStats.item(row, col).setFlags(Qt.ItemIsEnabled)
+        self.ui.tableDiceStats.item(row, col).setBackground(QColor('lightblue'))
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
         self.refTracker.lockInDice(col//4-1, row+2)
