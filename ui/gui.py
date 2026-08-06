@@ -12,7 +12,8 @@ class GUIMain(QMainWindow):
     '''
     def __init__(self, cache):
         '''
-        todo write me
+        Main constructor. Initializes GUI from generated mainwindow.py module, 
+        module instance references, table construction, event stitching, etc.
         '''
         super(GUIMain, self).__init__()
         self.ui = mainGUIform()
@@ -65,7 +66,7 @@ class GUIMain(QMainWindow):
             self.ui.tableDiceStats.item(i, 8).setCheckState(Qt.Unchecked)
             self.ui.tableDiceStats.item(i, 12).setCheckState(Qt.Unchecked)
             self.ui.tableDiceStats.item(i, 16).setCheckState(Qt.Unchecked)
-            if i == 5: # for 7 roll
+            if i == 5: # for 7 roll (robber, cant build on 7)
                 self.ui.tableDiceStats.item(i, 4).setFlags(Qt.ItemIsEnabled)
                 self.ui.tableDiceStats.item(i, 8).setFlags(Qt.ItemIsEnabled)
                 self.ui.tableDiceStats.item(i, 12).setFlags(Qt.ItemIsEnabled)
@@ -90,6 +91,7 @@ class GUIMain(QMainWindow):
         self.ui.tableRolls.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
         for i, w in enumerate(self.tableRollsHeader.values()):
             self.ui.tableRolls.setColumnWidth(i, w)
+        # rows get generated on roll event
 
         # =====================================================================
         # Totals table construction
@@ -138,7 +140,7 @@ class GUIMain(QMainWindow):
         Class method override. Promps the user before closing the application 
         and all child windows.
         '''
-        result = QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', 
+        result = QMessageBox.question(self, 'Quit', 'Are you sure you want to quit?', \
                                       QMessageBox.Yes, QMessageBox.Cancel)
         if result == QMessageBox.Yes:
             event.accept() 
@@ -148,7 +150,7 @@ class GUIMain(QMainWindow):
 
     def updateFields(self, roll=None):
         '''
-        todo write me
+        UI update handler. Populates and colours all the table cells. 
         '''
         self.ui.lineNewRoll.clear()
 
@@ -199,22 +201,23 @@ class GUIMain(QMainWindow):
 
     def interpolateColour(self, val, minLim, maxLim):
         '''
-        todo write me
+        Returns a colour matched to the given value's position on the given  
+        range. 
         '''
         ratio = max(0.0, min(1.0, (val - minLim) / (maxLim - minLim)))
         colourMin = QColor(255,120,120) #lightcoral, tomato
         colourMax = QColor(120,255,120) #lightgreen, limegreen
 
-        return QColor(int(colourMin.red() + ratio * (colourMax.red() - colourMin.red())), \
-                      int(colourMin.green() + ratio * (colourMax.green() - colourMin.green())), \
+        return QColor(int(colourMin.red() + ratio * (colourMax.red() - colourMin.red())), 
+                      int(colourMin.green() + ratio * (colourMax.green() - colourMin.green())), 
                       int(colourMin.blue() + ratio * (colourMax.blue() - colourMin.blue())))
 
 
     def newRoll(self):
         '''
-        todo write me
+        Parses user roll entry and calculates statistics.
         '''
-        try:
+        try: # valid roll?
             dice = None
             dice = int(self.ui.lineNewRoll.text())
             if not (2 <= dice <= 12):
@@ -222,32 +225,38 @@ class GUIMain(QMainWindow):
         except:
             print(f'Invalid dice: {dice}')
         else:
+            # fetch and package dice roll and yields
             roll = (dice, 
                     (self.ui.tableDiceStats.item(dice-2, 4).checkState() == Qt.Checked,
                      self.ui.tableDiceStats.item(dice-2, 8).checkState() == Qt.Checked,
                      self.ui.tableDiceStats.item(dice-2, 12).checkState() == Qt.Checked,
                      self.ui.tableDiceStats.item(dice-2, 16).checkState() == Qt.Checked))
+            # calculate and update
             self.refTracker.newRoll(roll)
             self.updateFields(roll)
         
 
     def deleteLastRoll(self):
         '''
-        todo write me
+        Undo last roll. Todo: fix wonkyness with construction (aka dice lock)
         '''
         self.refTracker.deleteLastRoll()
         self.ui.tableRolls.removeRow(self.ui.tableRolls.rowCount()-1)
         self.updateFields()
 
+
     def lockInDice(self, row, col):
         '''
-        todo write me
+        Locks in a dice roll as a yielding roll for a player, aka "building a 
+        settlement" (what this should've been called). Triggered from "cell 
+        changed in a table" event, in this case checkmarks. 
         '''
+        # update triggered cell
         self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
         self.ui.tableDiceStats.item(row, col).setFlags(Qt.ItemIsEnabled)
         self.ui.tableDiceStats.item(row, col).setBackground(QColor('orchid'))
         self.ui.tableDiceStats.item(row, col+1).setBackground(QColor('orchid'))
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
-
+        # have tracker remember player and dice
         self.refTracker.lockInDice(col//4-1, row+2)
         
