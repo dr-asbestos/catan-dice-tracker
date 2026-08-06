@@ -1,4 +1,5 @@
 from collections import Counter
+from math import sqrt
 from sys import float_info
 epsilon = float_info.epsilon
 
@@ -25,7 +26,7 @@ class Tracker:
         self.sampleRolls = Counter(r[0] for r in self.rolls)
         self.idealRolls = {k:v/self.totalCombs*len(self.rolls) for k,v in self.diceCombs.items()}
         self.rollDiffs = {k:self.sampleRolls.get(k, 0) - v for k,v in self.idealRolls.items()}
-        self.luckDiffs = {k:v/(len(self.rolls)+epsilon) for k,v in self.rollDiffs.items()}
+        self.luckDiffs = {k:v/(sqrt(len(self.rolls))+epsilon) for k,v in self.rollDiffs.items()}
 
         self.playerYields = {x:{k:[roll[1][x] for roll in self.rolls if roll[0] == k].count(True) for k in self.diceCombs.keys()} \
                              for x in (0,1,2,3)}
@@ -33,7 +34,7 @@ class Tracker:
                                   for x in (0,1,2,3)}
         self.playerYieldDiffs = {x:{k:self.playerYields[x][k] - v for k,v in self.playerIdealYields[x].items()} \
                                  for x in (0,1,2,3)}
-        self.playerYieldLuck = {x:{k:(self.diceLocks[x][k]!=-1)*v/(len(self.rolls)-self.diceLocks[x][k]+epsilon) for k,v in self.playerYieldDiffs[x].items()} \
+        self.playerYieldLuck = {x:{k:(self.diceLocks[x][k]!=-1)*v/(sqrt(len(self.rolls)-self.diceLocks[x][k])+epsilon) for k,v in self.playerYieldDiffs[x].items()} \
                                 for x in (0,1,2,3)}
         #print(f'{self.playerYieldDiffs=}')
         #print(f'{self.playerYieldLuck=}')
