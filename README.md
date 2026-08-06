@@ -11,8 +11,9 @@ Have you eved wondered just how much you are getting screwed over by the dice in
 5. You can 'build' more settlements as you're rolling new dice, the program will account for those settlements getting built later in the game.
 
 ## Todo list:
-- add robber functionality
-- add clear all button w warning
-- fix delete last roll behaving funky with later build settlements
-- save game record?
-- anything else I can think of and bother doing
+- [ ] add robber functionality
+- [ ] add colour config so you can choose your own _prettier_ colours
+- [ ] add clear all button w warning
+- [ ] fix delete last roll behaving funky with later build settlements
+- [ ] save game record?
+- [ ] anything else I can think of and bother doing
