@@ -16,4 +16,3 @@ class SharedContent:
         '''
         with open(path, 'rb') as f:
             self.config = tomllib.load(f)
-            print(f"Loaded config: {self.config['Version']['config']}")
