@@ -134,15 +134,15 @@ class GUIMain(QMainWindow):
             self.ui.tableDiceStats.item(i, 13).setText(f'{self.refTracker.playerYields[2][i+2]}')
             self.ui.tableDiceStats.item(i, 17).setText(f'{self.refTracker.playerYields[3][i+2]}')
 
-            self.ui.tableDiceStats.item(i, 6).setText(f'{self.refTracker.playerYieldDiffs[0].get(i+2, 0):+.2f}')
-            self.ui.tableDiceStats.item(i, 10).setText(f'{self.refTracker.playerYieldDiffs[1].get(i+2, 0):+.2f}')
-            self.ui.tableDiceStats.item(i, 14).setText(f'{self.refTracker.playerYieldDiffs[2].get(i+2, 0):+.2f}')
-            self.ui.tableDiceStats.item(i, 18).setText(f'{self.refTracker.playerYieldDiffs[3].get(i+2, 0):+.2f}')
+            self.ui.tableDiceStats.item(i, 6).setText(f'{self.refTracker.playerYieldDiffs[0][i+2]:+.2f}')
+            self.ui.tableDiceStats.item(i, 10).setText(f'{self.refTracker.playerYieldDiffs[1][i+2]:+.2f}')
+            self.ui.tableDiceStats.item(i, 14).setText(f'{self.refTracker.playerYieldDiffs[2][i+2]:+.2f}')
+            self.ui.tableDiceStats.item(i, 18).setText(f'{self.refTracker.playerYieldDiffs[3][i+2]:+.2f}')
 
-            self.ui.tableDiceStats.item(i, 7).setText(f'{self.refTracker.playerYieldLuck[0].get(i+2, 0):+.2%}')
-            self.ui.tableDiceStats.item(i, 11).setText(f'{self.refTracker.playerYieldLuck[1].get(i+2, 0):+.2%}')
-            self.ui.tableDiceStats.item(i, 15).setText(f'{self.refTracker.playerYieldLuck[2].get(i+2, 0):+.2%}')
-            self.ui.tableDiceStats.item(i, 19).setText(f'{self.refTracker.playerYieldLuck[3].get(i+2, 0):+.2%}')
+            self.ui.tableDiceStats.item(i, 7).setText(f'{self.refTracker.playerYieldLuck[0][i+2]:+.2%}')
+            self.ui.tableDiceStats.item(i, 11).setText(f'{self.refTracker.playerYieldLuck[1][i+2]:+.2%}')
+            self.ui.tableDiceStats.item(i, 15).setText(f'{self.refTracker.playerYieldLuck[2][i+2]:+.2%}')
+            self.ui.tableDiceStats.item(i, 19).setText(f'{self.refTracker.playerYieldLuck[3][i+2]:+.2%}')
 
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
