@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (QMainWindow, QHeaderView, QTableWidgetItem, \
                                QMessageBox)
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QIntValidator
+from PySide6.QtGui import QIntValidator, QColor
 
 from .mainwindow import Ui_MainWindow as mainGUIform
 
@@ -146,6 +146,7 @@ class GUIMain(QMainWindow):
                     self.ui.tableRolls.item(i, j).setText(str(roll[0]))
                 else:
                     self.ui.tableRolls.item(i, j).setText('\u2714' if roll[1][j-1] else '\u2717')
+                    self.ui.tableRolls.item(i, j).setBackground(QColor('lightgreen') if roll[1][j-1] else QColor('lightcoral'))
 
 
     def newRoll(self):
