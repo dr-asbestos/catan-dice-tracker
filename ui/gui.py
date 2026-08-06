@@ -136,7 +136,7 @@ class GUIMain(QMainWindow):
                 self.ui.tableDiceStats.item(i, 4*p+6).setText(f'{self.refTracker.playerYieldDiffs[p][i+2]:+.2f}')
                 self.ui.tableDiceStats.item(i, 4*p+6).setBackground(self.interpolateColour(self.refTracker.playerYieldDiffs[p][i+2], -2, 2))
                 self.ui.tableDiceStats.item(i, 4*p+7).setText(f'{self.refTracker.playerYieldLuck[p][i+2]:+.2%}')
-                self.ui.tableDiceStats.item(i, 4*p+7).setBackground(self.interpolateColour(self.refTracker.playerYieldLuck[p][i+2], -.1, .1))
+                self.ui.tableDiceStats.item(i, 4*p+7).setBackground(self.interpolateColour(self.refTracker.playerYieldLuck[p][i+2], -.2, .2))
 
         self.ui.tableDiceStats.clearSelection()
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
