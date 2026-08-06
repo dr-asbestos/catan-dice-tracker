@@ -128,10 +128,22 @@ class GUIMain(QMainWindow):
             self.ui.tableDiceStats.item(i, 1).setText(f'{self.refTracker.sampleRolls[i+2]}')
             self.ui.tableDiceStats.item(i, 2).setText(f'{self.refTracker.rollDiffs[i+2]:+.2f}')
             self.ui.tableDiceStats.item(i, 3).setText(f'{self.refTracker.luckDiffs[i+2]:+.2%}')
+
             self.ui.tableDiceStats.item(i, 5).setText(f'{self.refTracker.playerYields[0][i+2]}')
             self.ui.tableDiceStats.item(i, 9).setText(f'{self.refTracker.playerYields[1][i+2]}')
             self.ui.tableDiceStats.item(i, 13).setText(f'{self.refTracker.playerYields[2][i+2]}')
             self.ui.tableDiceStats.item(i, 17).setText(f'{self.refTracker.playerYields[3][i+2]}')
+
+            self.ui.tableDiceStats.item(i, 6).setText(f'{self.refTracker.playerYieldDiffs[0].get(i+2, 0):+.2f}')
+            self.ui.tableDiceStats.item(i, 10).setText(f'{self.refTracker.playerYieldDiffs[1].get(i+2, 0):+.2f}')
+            self.ui.tableDiceStats.item(i, 14).setText(f'{self.refTracker.playerYieldDiffs[2].get(i+2, 0):+.2f}')
+            self.ui.tableDiceStats.item(i, 18).setText(f'{self.refTracker.playerYieldDiffs[3].get(i+2, 0):+.2f}')
+
+            self.ui.tableDiceStats.item(i, 7).setText(f'{self.refTracker.playerYieldLuck[0].get(i+2, 0):+.2%}')
+            self.ui.tableDiceStats.item(i, 11).setText(f'{self.refTracker.playerYieldLuck[1].get(i+2, 0):+.2%}')
+            self.ui.tableDiceStats.item(i, 15).setText(f'{self.refTracker.playerYieldLuck[2].get(i+2, 0):+.2%}')
+            self.ui.tableDiceStats.item(i, 19).setText(f'{self.refTracker.playerYieldLuck[3].get(i+2, 0):+.2%}')
+
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
         if roll is not None:
