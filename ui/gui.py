@@ -75,6 +75,7 @@ class GUIMain(QMainWindow):
         # Rolls table construction
         # =====================================================================
 
+        # column names and widths
         self.tableRollsHeader = {
             'Roll': 35,
             'P1': 25,
@@ -82,7 +83,7 @@ class GUIMain(QMainWindow):
             'P3': 25,
             'P4': 25
         }
-        # column and row settings
+        # column settings
         self.ui.tableRolls.setColumnCount(len(self.tableRollsHeader))
         self.ui.tableRolls.setHorizontalHeaderLabels(self.tableRollsHeader.keys())
         self.ui.tableRolls.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
@@ -90,6 +91,34 @@ class GUIMain(QMainWindow):
         for i, w in enumerate(self.tableRollsHeader.values()):
             self.ui.tableRolls.setColumnWidth(i, w)
 
+        # =====================================================================
+        # Totals table construction
+        # =====================================================================
+
+        # column names and widths
+        self.tableTotalStatsHeader = {
+            'Player 1': 80,
+            'Player 2': 80,
+            'Player 3': 80,
+            'Player 4': 80,
+        }
+        # colunm settings
+        self.ui.tableTotalStats.setColumnCount(len(self.tableTotalStatsHeader))
+        self.ui.tableTotalStats.setHorizontalHeaderLabels(self.tableTotalStatsHeader.keys())
+        self.ui.tableTotalStats.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+        self.ui.tableTotalStats.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+        for i, w in enumerate(self.tableTotalStatsHeader.values()):
+            self.ui.tableTotalStats.setColumnWidth(i, w)
+
+        # row settings
+        self.tableTotalStatsRows = ('Yield', 'Diffs', 'Luck')
+        self.ui.tableTotalStats.setRowCount(len(self.tableTotalStatsRows))
+        self.ui.tableTotalStats.setVerticalHeaderLabels(self.tableTotalStatsRows)
+
+        for i in range(len(self.tableTotalStatsRows)):
+            for j in range(len(self.tableTotalStatsHeader)):
+                self.ui.tableTotalStats.setItem(i, j, QTableWidgetItem())
+                self.ui.tableTotalStats.item(i, j).setTextAlignment(Qt.AlignCenter)
         
         # =====================================================================
         # Events Stitching and Other Adjustments
@@ -123,6 +152,7 @@ class GUIMain(QMainWindow):
         '''
         self.ui.lineNewRoll.clear()
 
+        # populating and colouring dice stats table
         self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
         for i in range(11):
             self.ui.tableDiceStats.item(i, 1).setText(f'{self.refTracker.sampleRolls[i+2]}')
@@ -141,6 +171,16 @@ class GUIMain(QMainWindow):
         self.ui.tableDiceStats.clearSelection()
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
+        for p in (0,1,2,3):
+            self.ui.tableTotalStats.item(0, p).setText(f'{sum(self.refTracker.playerYields[p].values())}')
+            tempDiffs = sum(self.refTracker.playerYieldDiffs[p].values())
+            self.ui.tableTotalStats.item(1, p).setText(f'{tempDiffs:+.2f}')
+            self.ui.tableTotalStats.item(1, p).setBackground(self.interpolateColour(tempDiffs, -2, 2))
+            tempLuck = sum(self.refTracker.playerYieldLuck[p].values())
+            self.ui.tableTotalStats.item(2, p).setText(f'{tempLuck:+.2%}')
+            self.ui.tableTotalStats.item(2, p).setBackground(self.interpolateColour(tempLuck, -.2, .2))
+
+        # populating and colouring roll+yield history table
         if roll is not None:
             i = self.ui.tableRolls.rowCount()
             self.ui.tableRolls.insertRow(i)
