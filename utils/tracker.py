@@ -14,7 +14,7 @@ class Tracker:
         self.diceCombs = {2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:5, 9:4, 10:3, 11:2, 12:1}
         self.totalCombs = sum(self.diceCombs.values())
         self.rolls = []
-        self.diceLocks = {x:{k:None for k in self.diceCombs.keys()} for x in (0,1,2,3)}
+        self.diceLocks = {x:{k:-1 for k in self.diceCombs.keys()} for x in (0,1,2,3)}
         self.calculate()
 
 
@@ -29,11 +29,11 @@ class Tracker:
 
         self.playerYields = {x:{k:[roll[1][x] for roll in self.rolls if roll[0] == k].count(True) for k in self.diceCombs.keys()} \
                              for x in (0,1,2,3)}
-        self.playerIdealYields = {x:{k:v/self.totalCombs*(len(self.rolls)-self.diceLocks[x][k]) for k,v in self.diceCombs.items() if self.diceLocks[x][k] is not None} \
+        self.playerIdealYields = {x:{k:(self.diceLocks[x][k]!=-1)*v/self.totalCombs*(len(self.rolls)-self.diceLocks[x][k]) for k,v in self.diceCombs.items()} \
                                   for x in (0,1,2,3)}
         self.playerYieldDiffs = {x:{k:self.playerYields[x][k] - v for k,v in self.playerIdealYields[x].items()} \
                                  for x in (0,1,2,3)}
-        self.playerYieldLuck = {x:{k:v/(len(self.rolls)-self.diceLocks[x][k]+epsilon) for k,v in self.playerYieldDiffs[x].items()} \
+        self.playerYieldLuck = {x:{k:(self.diceLocks[x][k]!=-1)*v/(len(self.rolls)-self.diceLocks[x][k]+epsilon) for k,v in self.playerYieldDiffs[x].items()} \
                                 for x in (0,1,2,3)}
         #print(f'{self.playerYieldDiffs=}')
         #print(f'{self.playerYieldLuck=}')
