@@ -21,6 +21,8 @@ class GUIMain(QMainWindow):
         self.ui.setupUi(self)
 
         self.refTracker = cache.tracker
+        self.colours = cache.config['Colours']
+        self.colourRanges = cache.config['ColourRange']
 
         # =====================================================================
         # Dice Stats table construction
@@ -160,16 +162,16 @@ class GUIMain(QMainWindow):
         for i in range(11):
             self.ui.tableDiceStats.item(i, 1).setText(f'{self.refTracker.sampleRolls[i+2]}')
             self.ui.tableDiceStats.item(i, 2).setText(f'{self.refTracker.rollDiffs[i+2]:+.2f}')
-            self.ui.tableDiceStats.item(i, 2).setBackground(self.interpolateColour(self.refTracker.rollDiffs[i+2], -2, 2))
+            self.ui.tableDiceStats.item(i, 2).setBackground(self.interpolateColour(self.refTracker.rollDiffs[i+2], *self.colourRanges['diffs']))
             self.ui.tableDiceStats.item(i, 3).setText(f'{self.refTracker.luckDiffs[i+2]:+.2%}')
-            self.ui.tableDiceStats.item(i, 3).setBackground(self.interpolateColour(self.refTracker.luckDiffs[i+2], -.3, .3))
+            self.ui.tableDiceStats.item(i, 3).setBackground(self.interpolateColour(self.refTracker.luckDiffs[i+2], *self.colourRanges['luck']))
 
             for p in (0,1,2,3):
                 self.ui.tableDiceStats.item(i, 4*p+5).setText(f'{self.refTracker.playerYields[p][i+2]}')
                 self.ui.tableDiceStats.item(i, 4*p+6).setText(f'{self.refTracker.playerYieldDiffs[p][i+2]:+.2f}')
-                self.ui.tableDiceStats.item(i, 4*p+6).setBackground(self.interpolateColour(self.refTracker.playerYieldDiffs[p][i+2], -2, 2))
+                self.ui.tableDiceStats.item(i, 4*p+6).setBackground(self.interpolateColour(self.refTracker.playerYieldDiffs[p][i+2], *self.colourRanges['diffs']))
                 self.ui.tableDiceStats.item(i, 4*p+7).setText(f'{self.refTracker.playerYieldLuck[p][i+2]:+.2%}')
-                self.ui.tableDiceStats.item(i, 4*p+7).setBackground(self.interpolateColour(self.refTracker.playerYieldLuck[p][i+2], -.3, .3))
+                self.ui.tableDiceStats.item(i, 4*p+7).setBackground(self.interpolateColour(self.refTracker.playerYieldLuck[p][i+2], *self.colourRanges['luck']))
 
         self.ui.tableDiceStats.clearSelection()
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
@@ -179,10 +181,10 @@ class GUIMain(QMainWindow):
             self.ui.tableTotalStats.item(0, p).setText(f'{sum(self.refTracker.playerYields[p].values())}')
             tempDiffs = sum(self.refTracker.playerYieldDiffs[p].values())
             self.ui.tableTotalStats.item(1, p).setText(f'{tempDiffs:+.2f}')
-            self.ui.tableTotalStats.item(1, p).setBackground(self.interpolateColour(tempDiffs, -2, 2))
+            self.ui.tableTotalStats.item(1, p).setBackground(self.interpolateColour(tempDiffs, *self.colourRanges['diffs']))
             tempLuck = sum(self.refTracker.playerYieldLuck[p].values())
             self.ui.tableTotalStats.item(2, p).setText(f'{tempLuck:+.2%}')
-            self.ui.tableTotalStats.item(2, p).setBackground(self.interpolateColour(tempLuck, -.3, .3))
+            self.ui.tableTotalStats.item(2, p).setBackground(self.interpolateColour(tempLuck, *self.colourRanges['luck']))
 
         # populating and colouring roll+yield history table
         if roll is not None:
@@ -198,7 +200,7 @@ class GUIMain(QMainWindow):
                 else:
                     #                                   unicode tick                  unicode cross
                     self.ui.tableRolls.item(i, j).setText('\u2714' if roll[1][j-1] else '\u2717')
-                    self.ui.tableRolls.item(i, j).setBackground(QColor('lightgreen') if roll[1][j-1] else QColor('lightcoral'))
+                    self.ui.tableRolls.item(i, j).setBackground(QColor(*self.colours['yieldYes']) if roll[1][j-1] else QColor(*self.colours['yieldNo']))
 
 
     def interpolateColour(self, val, minLim, maxLim):
@@ -207,8 +209,8 @@ class GUIMain(QMainWindow):
         range. 
         '''
         ratio = max(0.0, min(1.0, (val - minLim) / (maxLim - minLim)))
-        colourMin = QColor(255,120,120) #lightcoral, tomato
-        colourMax = QColor(120,255,120) #lightgreen, limegreen
+        colourMin = QColor(*self.colours['rangeMin']) #lightcoral, tomato
+        colourMax = QColor(*self.colours['rangeMax']) #lightgreen, limegreen
 
         return QColor(int(colourMin.red() + ratio * (colourMax.red() - colourMin.red())), 
                       int(colourMin.green() + ratio * (colourMax.green() - colourMin.green())), 
@@ -256,8 +258,8 @@ class GUIMain(QMainWindow):
         # update triggered cell
         self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
         self.ui.tableDiceStats.item(row, col).setFlags(Qt.ItemIsEnabled)
-        self.ui.tableDiceStats.item(row, col).setBackground(QColor('orchid'))
-        self.ui.tableDiceStats.item(row, col+1).setBackground(QColor('orchid'))
+        self.ui.tableDiceStats.item(row, col).setBackground(QColor(*self.colours['settlement']))
+        self.ui.tableDiceStats.item(row, col+1).setBackground(QColor(*self.colours['settlement']))
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
         # have tracker remember player and dice
         self.refTracker.lockInDice(col//4-1, row+2)
