@@ -8,7 +8,8 @@ from .mainwindow import Ui_MainWindow as mainGUIform
 
 class GUIMain(QMainWindow):
     '''
-    todo write me
+    Frontend-backend stitching and advanced GUI setup (ie everything that Qt 
+    Designer cannot do). 
     '''
     def __init__(self, cache):
         '''
@@ -91,7 +92,7 @@ class GUIMain(QMainWindow):
         self.ui.tableRolls.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
         for i, w in enumerate(self.tableRollsHeader.values()):
             self.ui.tableRolls.setColumnWidth(i, w)
-        # rows get generated on roll event
+        # rows get generated on roll event in updateFields
 
         # =====================================================================
         # Totals table construction
@@ -195,6 +196,7 @@ class GUIMain(QMainWindow):
                 if j == 0:
                     self.ui.tableRolls.item(i, j).setText(str(roll[0]))
                 else:
+                    #                                   unicode tick                  unicode cross
                     self.ui.tableRolls.item(i, j).setText('\u2714' if roll[1][j-1] else '\u2717')
                     self.ui.tableRolls.item(i, j).setBackground(QColor('lightgreen') if roll[1][j-1] else QColor('lightcoral'))
 
