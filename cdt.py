@@ -12,6 +12,7 @@ def main():
     Main entry point.
     '''
     cache = SharedContent()
+    cache.load_config('config.toml')
 
     cache.tracker = Tracker()
 
