@@ -171,6 +171,7 @@ class GUIMain(QMainWindow):
         self.ui.tableDiceStats.clearSelection()
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
+        self.ui.tableTotalStats.clearSelection()
         for p in (0,1,2,3):
             self.ui.tableTotalStats.item(0, p).setText(f'{sum(self.refTracker.playerYields[p].values())}')
             tempDiffs = sum(self.refTracker.playerYieldDiffs[p].values())
@@ -182,6 +183,7 @@ class GUIMain(QMainWindow):
 
         # populating and colouring roll+yield history table
         if roll is not None:
+            self.ui.tableRolls.clearSelection()
             i = self.ui.tableRolls.rowCount()
             self.ui.tableRolls.insertRow(i)
             self.ui.tableRolls.scrollToBottom()
