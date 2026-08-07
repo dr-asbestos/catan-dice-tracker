@@ -10,6 +10,7 @@ Have you eved wondered just how much you are getting screwed over by the dice in
 4. Look at ~pretty~ numbers and colours! 
 5. You can 'build' more settlements as you're rolling new dice. The program remembers which turn the settlement was built and will account for that when calculating stats. 
 6. Click 'Delete last roll' to... delete last roll. This will also 'unbuild' any settlements built that turn. 
+7. Click 'Reset everything' to start from scratch.
 
 ## Todo list:
 - [ ] add robber functionality
