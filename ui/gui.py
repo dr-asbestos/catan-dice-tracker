@@ -70,11 +70,13 @@ class GUIMain(QMainWindow):
             self.ui.tableDiceStats.item(i, 8).setCheckState(Qt.Unchecked)
             self.ui.tableDiceStats.item(i, 12).setCheckState(Qt.Unchecked)
             self.ui.tableDiceStats.item(i, 16).setCheckState(Qt.Unchecked)
+            
             if i == 5: # for 7 roll (robber, cant build on 7)
-                self.ui.tableDiceStats.item(i, 4).setFlags(Qt.ItemIsEnabled)
-                self.ui.tableDiceStats.item(i, 8).setFlags(Qt.ItemIsEnabled)
-                self.ui.tableDiceStats.item(i, 12).setFlags(Qt.ItemIsEnabled)
-                self.ui.tableDiceStats.item(i, 16).setFlags(Qt.ItemIsEnabled)
+                for j in range(4, 20):
+                    self.ui.tableDiceStats.item(i, j).setFlags(Qt.ItemIsEnabled)
+                    if j not in (4, 8, 12, 16):
+                        self.ui.tableDiceStats.item(i, j).setText('N/A')
+                
 
         # =====================================================================
         # Rolls table construction
@@ -167,6 +169,9 @@ class GUIMain(QMainWindow):
             self.ui.tableDiceStats.item(i, 3).setText(f'{self.refTracker.luckDiffs[i+2]:+.2%}')
             self.ui.tableDiceStats.item(i, 3).setBackground(self.interpolateColour(self.refTracker.luckDiffs[i+2], *self.colourRanges['luck']))
 
+            if i == 5: # skip per player stats for 7 roll
+                continue
+
             for p in (0,1,2,3):
                 self.ui.tableDiceStats.item(i, 4*p+5).setText(f'{self.refTracker.playerYields[p][i+2]}')
                 self.ui.tableDiceStats.item(i, 4*p+6).setText(f'{self.refTracker.playerYieldDiffs[p][i+2]:+.2f}')
@@ -177,6 +182,7 @@ class GUIMain(QMainWindow):
         self.ui.tableDiceStats.clearSelection()
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
 
+        # populating and colouring totals table
         self.ui.tableTotalStats.clearSelection()
         for p in (0,1,2,3):
             self.ui.tableTotalStats.item(0, p).setText(f'{sum(self.refTracker.playerYields[p].values())}')
