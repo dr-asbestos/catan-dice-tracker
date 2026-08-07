@@ -3,6 +3,8 @@ from PySide6.QtWidgets import (QMainWindow, QHeaderView, QTableWidgetItem, \
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIntValidator, QColor
 
+from random import choices
+
 from .mainwindow import Ui_MainWindow as mainGUIform
 
 
@@ -135,6 +137,7 @@ class GUIMain(QMainWindow):
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
         self.ui.buttonDeleteLastRoll.clicked.connect(self.deleteLastRoll)
         self.ui.buttonNewRoll.clicked.connect(self.newRoll)
+        self.ui.buttonAutoRoll.clicked.connect(lambda: self.newRoll(auto=True))
         self.ui.buttonReset.clicked.connect(self.reset)
         self.ui.lineNewRoll.editingFinished.connect(self.newRoll)
         self.ui.lineNewRoll.setValidator(QIntValidator(2, 12))
@@ -225,13 +228,16 @@ class GUIMain(QMainWindow):
                       int(colourMin.blue() + ratio * (colourMax.blue() - colourMin.blue())))
 
 
-    def newRoll(self):
+    def newRoll(self, auto=False):
         '''
         Parses user roll entry and calculates statistics.
         '''
         try: # valid roll?
             dice = None
-            dice = int(self.ui.lineNewRoll.text())
+            if auto:
+                dice = choices(list(self.refTracker.diceCombs.keys()), self.refTracker.diceCombs.values(), k=1)[0]
+            else:
+                dice = int(self.ui.lineNewRoll.text())
             if not (2 <= dice <= 12):
                 raise
         except:
