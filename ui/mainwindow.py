@@ -127,6 +127,11 @@ class Ui_MainWindow(object):
         self.tableTotalStats.setSupportedDragActions(Qt.DropAction.IgnoreAction)
         self.tableTotalStats.horizontalHeader().setMinimumSectionSize(10)
         self.tableTotalStats.verticalHeader().setVisible(True)
+        self.buttonReset = QPushButton(self.centralwidget)
+        self.buttonReset.setObjectName(u"buttonReset")
+        self.buttonReset.setGeometry(QRect(150, 50, 151, 31))
+        self.buttonReset.setFont(font2)
+        self.buttonReset.setText(u"Reset everything")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
