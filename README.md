@@ -15,7 +15,7 @@ Have you eved wondered just how much you are getting screwed over by the dice in
 ## Todo list:
 - [ ] add robber functionality
 - [x] add colour config so you can choose your own _prettier_ colours
-- [ ] add clear all button w warning
+- [x] add clear all button w warning
 - [x] fix delete last roll behaving funky with later build settlements
 - [ ] save game record?
 - [ ] anything else I can think of and bother doing
