@@ -132,6 +132,11 @@ class Ui_MainWindow(object):
         self.buttonReset.setGeometry(QRect(150, 50, 151, 31))
         self.buttonReset.setFont(font2)
         self.buttonReset.setText(u"Reset everything")
+        self.buttonAutoRoll = QPushButton(self.centralwidget)
+        self.buttonAutoRoll.setObjectName(u"buttonAutoRoll")
+        self.buttonAutoRoll.setGeometry(QRect(30, 50, 111, 31))
+        self.buttonAutoRoll.setFont(font2)
+        self.buttonAutoRoll.setText(u"Roll for me")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
