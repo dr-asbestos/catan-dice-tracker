@@ -19,6 +19,7 @@ class GUIMain(QMainWindow):
         super(GUIMain, self).__init__()
         self.ui = mainGUIform()
         self.ui.setupUi(self)
+        self.defaultFlags = QTableWidgetItem().flags() # fix for Qt being weird w flags
 
         self.refTracker = cache.tracker
         self.colours = cache.config['Colours']
@@ -242,8 +243,21 @@ class GUIMain(QMainWindow):
 
     def deleteLastRoll(self):
         '''
-        Undo last roll. Todo: fix wonkyness with construction (aka dice lock)
+        Undoes last roll. Removes any dice locks made on the previous turn. 
         '''
+        self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
+        for p, k in self.refTracker.diceLocks.items():
+            for die, turn in k.items():
+                # check if die was locked in last turn
+                if turn != -1 and turn + 1 == len(self.refTracker.rolls):
+                    # reset cell and die lock
+                    self.ui.tableDiceStats.item(die-2, 4*p+4).setFlags(self.defaultFlags)
+                    self.ui.tableDiceStats.item(die-2, 4*p+4).setCheckState(Qt.Unchecked)
+                    self.ui.tableDiceStats.item(die-2, 4*p+4).setData(Qt.BackgroundRole, None)
+                    self.ui.tableDiceStats.item(die-2, 4*p+5).setData(Qt.BackgroundRole, None)
+                    self.refTracker.diceLocks[p][die] = -1
+        self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
+
         self.refTracker.deleteLastRoll()
         self.ui.tableRolls.removeRow(self.ui.tableRolls.rowCount()-1)
         self.updateFields()
