@@ -8,11 +8,10 @@ Have you eved wondered just how much you are getting screwed over by the dice in
 2. Click on checkboxes in the Roll statistics table to 'build' settlements. 
 3. Enter your dice rolls in 'New roll'.
 4. Click 'Roll for me' if you cannot be bothered rolling and entering the dice yourself. The roll is weighted for 2d6.
-5. Look at ~pretty~ numbers and colours! 
+5. Look at ~pretty~ numbers and colours! You can change colours and gradient limits in `config.toml`.
 6. You can 'build' more settlements as you're rolling new dice. The program remembers which turn the settlement was built and will account for that when calculating stats. 
 7. Click 'Delete last roll' to... delete last roll. This will also 'unbuild' any settlements built that turn. 
 8. Click 'Reset everything' to start from scratch.
-9. You can change colours and gradient limits in `config.toml`.
 
 ## Todo list:
 - [ ] add robber functionality
