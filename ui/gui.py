@@ -70,7 +70,7 @@ class GUIMain(QMainWindow):
             self.ui.tableDiceStats.item(i, 8).setCheckState(Qt.Unchecked)
             self.ui.tableDiceStats.item(i, 12).setCheckState(Qt.Unchecked)
             self.ui.tableDiceStats.item(i, 16).setCheckState(Qt.Unchecked)
-            
+
             if i == 5: # for 7 roll (robber, cant build on 7)
                 for j in range(4, 20):
                     self.ui.tableDiceStats.item(i, j).setFlags(Qt.ItemIsEnabled)
@@ -135,6 +135,7 @@ class GUIMain(QMainWindow):
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
         self.ui.buttonDeleteLastRoll.clicked.connect(self.deleteLastRoll)
         self.ui.buttonNewRoll.clicked.connect(self.newRoll)
+        self.ui.buttonReset.clicked.connect(self.reset)
         self.ui.lineNewRoll.editingFinished.connect(self.newRoll)
         self.ui.lineNewRoll.setValidator(QIntValidator(2, 12))
 
@@ -283,4 +284,29 @@ class GUIMain(QMainWindow):
         self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
         # have tracker remember player and dice
         self.refTracker.lockInDice(col//4-1, row+2)
+
+
+    def reset(self):
+        '''
+        Prompts the user if they indeed want to reset everything, on positive 
+        response resets everything.
+        '''
+        result = QMessageBox.question(self, 'Reset', 'This action will clear the roll and building history, '\
+                                      'as well as all the statistics. Are you sure you want to continue?', \
+                                        QMessageBox.Yes, QMessageBox.Cancel)
+        if result == QMessageBox.Yes:
+            self.ui.tableDiceStats.cellChanged.disconnect(self.lockInDice)
+            for i in range(11):
+                for p in (0,1,2,3):
+                    self.ui.tableDiceStats.item(i, 4*p+4).setFlags(self.defaultFlags)
+                    self.ui.tableDiceStats.item(i, 4*p+4).setCheckState(Qt.Unchecked)
+                    self.ui.tableDiceStats.item(i, 4*p+4).setData(Qt.BackgroundRole, None)
+                    self.ui.tableDiceStats.item(i, 4*p+5).setData(Qt.BackgroundRole, None)
+            self.ui.tableDiceStats.cellChanged.connect(self.lockInDice)
+                
+            self.ui.tableRolls.setRowCount(0)
+            self.refTracker.reset()
+            self.updateFields()
+
+
         

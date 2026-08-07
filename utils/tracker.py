@@ -85,4 +85,9 @@ class Tracker:
         #print(f'locking in {dice} for P{player+1} before roll #{len(self.rolls)+1}')
         self.diceLocks[player][dice] = len(self.rolls)
 
+    def reset(self):
+        '''
+        Resets the tracker to it's initial state.
+        '''
+        self.__init__()
     
